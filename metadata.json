@@ -1,0 +1,5 @@
+{
+  "name": "Aura: AI-Assisted Data Cleaning",
+  "description": "An intelligent workbench for expert analysts to clean and prepare data. Aura leverages AI to provide transparent, auditable suggestions, keeping the user in full control of all transformations and significantly reducing the time spent on data preparation.",
+  "requestFramePermissions": []
+}

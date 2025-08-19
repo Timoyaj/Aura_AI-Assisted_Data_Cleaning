@@ -1,0 +1,49 @@
+# .github/workflows/deploy.yml
+
+name: Build and Deploy Aura
+
+# Run this workflow on pushes to the main branch
+on:
+  push:
+    branches:
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      # 1. Check out your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up the Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Specify the Node.js version
+          cache: 'npm' # Cache npm dependencies
+
+      # 3. Install dependencies (assuming a package.json)
+      # In a typical project, you'd run 'npm install' here.
+      # For your current setup, we can skip this and go to type-checking.
+      
+      # 4. Install TypeScript and type definitions for a check
+      - name: Install dev dependencies for type checking
+        run: npm install typescript @types/react @types/papaparse
+
+      # 5. Type-check the project
+      # This requires a tsconfig.json file in your repository.
+      - name: Type-check project
+        run: npx tsc --noEmit
+
+      # 6. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Since your project has no build step, we deploy the root directory.
+          publish_dir: ./ 
